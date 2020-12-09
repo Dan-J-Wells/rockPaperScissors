@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>title</title>
+  </head>
+  <body>
+    <script>
+      function playerPrompt() {
+        //Creates the prompt for the player
+        return prompt('Input your selection: rock, paper, or scissors');
+      }
+      
+      function computerPlay() {
+        //Randomly returns one of: rock, paper, or scissors
+        let computerSelection = Math.floor(3 * Math.random());
+        const choices = ['rock', 'paper', 'scissors'];
+        return choices[computerSelection];
+      }
+
+      function playerPlay() {
+        //Prompts the player for their selection and returns it if valid
+        let playerSelection;
+        let lower;
+
+        while (!playerSelection) {
+          playerSelection = playerPrompt();
+          if (!playerSelection) {
+            alert('You must input a value.');
+          }
+          else {
+            lower = String(playerSelection).toLowerCase();
+          }
+        }
+
+        switch (lower) {
+          case 'rock':
+          case 'paper':
+          case 'scissors':
+            return lower;
+            break;
+          default:
+            alert('You must input one of: rock, paper, or scissors.');
+        }
+      }
+
+      function compare(playerSelection, computerSelection) {
+        //compares the outputs of the computerPlay and playerPlay functions and returns the resultant game state
+        const rules = {
+          rock : {win : 'scissors', lose : 'paper'},
+          paper : {win : 'rock', lose : 'scissors'},
+          scissors : {win : 'paper', lose : 'rock'},
+        }
+
+        switch (computerSelection) {
+          case playerSelection:
+            return `Tied with ${playerSelection}`;
+            break;
+          case rules[playerSelection].win:
+            return `You won, ${playerSelection} beats ${computerSelection}`;
+            break;
+          case rules[playerSelection].lose:
+            return `You lost, ${computerSelection} beats ${playerSelection}`;
+        }
+      }
+
+      function playRound() {
+        //Container for functions needed for one round
+        let playerSelection = playerPlay();
+        let computerSelection = computerPlay();
+
+        return compare(playerSelection, computerSelection);
+      }
+
+      function game() {
+        //Repeats 5 rounds, keeps score, and returns the result after all rounds are completed
+        let playerScore = 0;
+        let computerScore = 0;
+        let ties = 0;
+
+        for (let i = 0; i < 5; i++) {
+          let round = playRound();
+          console.log(round);
+          (round.includes('won') ? playerScore++ : (round.includes('lost') ? computerScore++ : ties++));
+        }
+        
+        if (playerScore > computerScore) {
+          console.log(`You won! Wins: ${playerScore} Losses: ${computerScore} Ties: ${ties}`);
+        }
+        else if (playerScore < computerScore) {
+          console.log(`You lost. Wins: ${playerScore} Losses: ${computerScore} Ties: ${ties}`);
+        }
+        else {
+          console.log(`It was a tie. Wins: ${playerScore} Losses: ${computerScore} Ties: ${ties}`);
+        }
+      }
+
+      //Running Game
+      game();
+      
+    </script>
+  </body>
+</html>
